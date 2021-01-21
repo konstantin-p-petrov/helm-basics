@@ -4,7 +4,9 @@ pipeline {
     stages {
         stage('Clone gitrepo to Operation Server'){
             agent { 
-                label 'ops'
+                node {
+                    label 'ops'
+                }
             }
         
         {
@@ -17,6 +19,11 @@ pipeline {
 
         stage('build') {
             steps {
+                agent { 
+                node {
+                    label 'ops'
+                }
+            }
                 sh 'mvn --version'
                // sh 'mvn compile -f tools/pom.xml -Dlogin.user=ABC -Dlogin.password=ENC(123+w)'
             }
