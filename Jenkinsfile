@@ -17,8 +17,7 @@ pipeline {
             }
             steps {
                 sh 'mvn --version'
-                sh 'cd my-app'
-                sh 'mvn package'
+                sh 'cd my-app && mvn package'
                 echo '====stage 1: Successfully tested and packed Java Web Application===='
             }
         }
