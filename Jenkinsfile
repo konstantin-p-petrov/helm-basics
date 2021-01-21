@@ -18,7 +18,9 @@ pipeline {
             steps {
                 sh 'mvn --version'
                 sh 'cd my-app && mvn package'
+                sh 'pwd'
                 stash includes: '**/target/*.jar', name: 'testing-junit5-mockito-1.0'
+                sh 'pwd'
                 echo '====stage 1: Successfully tested and packed Java Web Application===='
             }
         }
