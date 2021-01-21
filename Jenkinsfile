@@ -8,8 +8,17 @@ pipeline {
             }
             steps {
                 checkout scm
-                echo '====stage 1: SCM Poll Stage===='
-
+                echo '====stage 1: Successfully pull repo===='
+            }
+        }
+        stage('Packing of my project') {
+            agent { 
+                label 'ops'
+            }
+            steps {
+                sh 'mvn --version'
+                sh 'mvn package'
+                echo '====stage 1: Successfully tested and packed Java Web Application===='
             }
         }
     }
