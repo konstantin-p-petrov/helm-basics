@@ -24,7 +24,7 @@ pipeline {
         }
         stage('Transfering files between Operation and Application Servers') {
             agent { 
-                label 'app'
+                label 'aps'
             }
             steps {
                 unstash 'testing-junit5-mockito-1.0' 
