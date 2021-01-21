@@ -2,14 +2,12 @@
 pipeline {
     agent none
     stages {
-        stage('Clone gitrepo to Operation Server'){
+        stage('Clone gitrepo to Operation Server') {
             agent { 
                 node {
                     label 'ops'
                 }
             }
-        
-        {
             steps {
                 echo '====stage 1: SCM Poll Stage===='
                 checkout scm
