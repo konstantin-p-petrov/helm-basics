@@ -19,6 +19,7 @@ pipeline {
             }
             steps {
                 sh 'mvn --version'
+            
                 sh 'cd my-app && mvn package'
                 echo '====stage 1: Successfully tested and packed Java Web Application===='
             }
@@ -36,7 +37,7 @@ pipeline {
                 label 'aps'
             }
             steps {
-                sh 'sudo systemctl start myapp.service'
+                sh 'sudo systemctl restart myapp.service'
                 sh 'sudo systemctl status myapp.service'
             }
         }
