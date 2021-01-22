@@ -10,7 +10,7 @@ public class MainController {
     @ResponseBody
     @GetMapping("/")
     public String hello() {
-        return "Hello Controller";
+        return "Hello Jenkins";
     }
 
 }
