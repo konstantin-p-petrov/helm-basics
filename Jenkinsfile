@@ -9,8 +9,8 @@ pipeline {
             steps {
                 checkout scm
                 echo '====stage 1: Successfully pulled repo===='
-                echo ' test '
-                
+                echo ' test s'
+
             }
         }
         stage('Packaging of Java Project') {
@@ -24,7 +24,9 @@ pipeline {
             }
         }
         stage('Transfering files between OpS and ApS') {
-            agent any
+            agent { 
+                label 'ops'
+            }
             steps {
                 sh 'scp jenkins@10.240.0.20:/var/jenkins/workspace/test/my-app/target/testing-junit5-mockito-1.0.jar jenkins@10.240.0.30:/var/jenkins/workspace'
             }
