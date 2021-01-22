@@ -9,6 +9,7 @@ pipeline {
             steps {
                 checkout scm
                 echo '====stage 1: Successfully pulled repo===='
+                echo '  '
             }
         }
         stage('Packaging of Java Project') {
