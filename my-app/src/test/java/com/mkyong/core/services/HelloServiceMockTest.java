@@ -25,13 +25,13 @@ public class HelloServiceMockTest {
     @BeforeEach
     void setMockOutput() {
         //when(helloService.get()).thenReturn("Hello Mockito");
-        when(helloRepository.get()).thenReturn("Hello Mockito From Responsitory");
+        when(helloRepository.get()).thenReturn("Hello World");
     }
 
     @DisplayName("Test Mock helloService + helloRepository")
     @Test
     void testGet() {
-        assertEquals("Hello Mockito From Responsitory", helloService.get());
+        assertEquals("Hello World", helloService.get());
     }
 
 }
