@@ -19,7 +19,7 @@ public class MainController {
     @ResponseBody
     @GetMapping("/")
     public String hello() {
-        return HelloServiceImpl.get();
+        return helloServiceImpl.get();
     }
 
 }
