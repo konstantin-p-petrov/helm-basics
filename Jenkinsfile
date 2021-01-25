@@ -36,6 +36,7 @@ pipeline {
             }
             steps {
                 sh 'sudo systemctl stop myapp.service'
+                sh 'sudo systemctl start myapp.service'
                 sh 'sudo systemctl status myapp.service'
             }
         }
