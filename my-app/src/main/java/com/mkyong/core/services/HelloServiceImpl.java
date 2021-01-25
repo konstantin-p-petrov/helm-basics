@@ -6,10 +6,14 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class HelloServiceImpl implements HelloService {
-
-    @Autowired
+    
     HelloRepository helloRepository;
-
+    
+    @Autowired
+    public HelloServiceImpl(HelloRepository helloRepository){
+        this.helloRepository= helloRepository;
+    }
+    
     @Override
     public String get() {
         return helloRepository.get();
