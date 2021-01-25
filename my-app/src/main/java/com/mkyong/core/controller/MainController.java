@@ -12,7 +12,7 @@ public class MainController {
     
     @Autowired
     public MainController(HelloServiceImpl helloServiceImpl){
-        this.helloServiceImpl= helloServiceImpl;
+        this.helloServiceImpl = helloServiceImpl;
     }
     
     @ResponseBody
