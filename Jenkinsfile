@@ -27,7 +27,7 @@ pipeline {
                 label 'ops'
             }
             steps {
-                sh 'scp jenkins@10.240.0.20:/var/jenkins/workspace/test/my-app/target/testing-junit5-mockito-1.0.jar jenkins@10.240.0.30:/home/jenkins'
+                sh 'scp jenkins@10.240.0.20:/var/jenkins/workspace/HelloWorld/my-app/target/testing-junit5-mockito-1.0.jar jenkins@10.240.0.30:/home/jenkins'
             }
         }
         stage('Starting Service file') {
