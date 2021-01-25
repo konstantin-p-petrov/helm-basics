@@ -20,7 +20,7 @@ public class HelloServiceMockTest {
 
     //@Spy
     @InjectMocks // auto inject helloRepository
-    private HelloService helloService = new HelloServiceImpl();
+    private HelloService helloService = new HelloServiceImpl(helloRepository);
 
     @BeforeEach
     void setMockOutput() {
