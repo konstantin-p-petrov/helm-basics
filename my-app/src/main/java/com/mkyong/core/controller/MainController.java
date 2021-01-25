@@ -7,7 +7,14 @@ import com.mkyong.core.services.HelloServiceImpl;
     
 @Controller
 public class MainController {
-
+    
+    HelloServiceImpl helloServiceImpl;
+    
+    @Autowired
+    public MainController(HelloServiceImpl helloServiceImpl){
+        this.helloServiceImpl= helloServiceImpl;
+    }
+    
     @ResponseBody
     @GetMapping("/")
     public String hello() {
