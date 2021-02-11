@@ -1,5 +1,8 @@
-
 pipeline {
+    environment {
+        registry = "konstantinnn/my-app"
+        registryCredential = "docker-credentials"
+        }
     agent none
     stages {
         stage('Fetching data from Github!') {
@@ -8,6 +11,9 @@ pipeline {
                  }
             steps {
                 checkout scm
+                script{
+                    sh 'git pull origin release'
+                }
                 echo '====stage 1: Successfully pulled repo=='
             }
         }
@@ -22,51 +28,60 @@ pipeline {
                 echo '====stage 1: Successfully tested and packed Java Web Application===='
             }
         }
-        stage("Code Checkout from Github") {
-            agent { 
-                label 'master'
-                 }
-            steps {
-            git branch: 'release',
-                url: 'https://github.com/konstantin-p-petrov/Project/'
-            }
-        }
+        
         stage('Checking Code via Sonar scanner') {
             agent { 
                 label 'master'
                  }
             steps {
                 script {
-                def scannerHome = tool 'SonarQube';
                     withSonarQubeEnv("SonarQube") {
-                    sh "${tool("sonarqube")}/opt/sonarscanner \
-                    -Dsonar.projectKey=test \
-                    -Dsonar.sources=. \
-                    -Dsonar.css.node=. \
-                    -Dsonar.host.url=http://http://10.240.0.10:9000"
+                    sh "cd my-app && mvn sonar:sonar -Dsonar.host.url=http://10.240.0.10:9000 -Dsonar.login=26e31db0e12146c1e30d1b5095b6e36a149b77ca"
                     }
                 }
             }
         }     
 
-
-       // stage('Transfering files between OpS and ApS') {
-       //     agent { 
-       //         label 'test-slave'
-       //     }
-       //     steps {
-       //         sh 'scp jenkins@10.240.0.10:/var/lib/jenkins/workspace/HelloWorld/my-app/target/testing-junit5-mockito-1.0.jar jenkins@10.240.0.20:/home/jenkins'
-       //     }
-       // }
-        stage('Starting Service file') {
+        stage('Build a container image and push it to Docker Private Repo') {
             agent { 
-                label 'test-slave'
-            }
+                label 'master'
+                 }
             steps {
-                sh 'sudo systemctl stop myapp.service'
-                sh 'sudo systemctl start myapp.service'
-                sh 'sudo systemctl status myapp.service'
+                script {
+                    docker.withRegistry('', registryCredential){
+                        def test_image = docker.build registry
+                        test_image.push('latest')
+                    }
+                }
             }
+        }     
+
+        stage('Pull container image from Docker Private Repo') {
+            agent { 
+                label 'Test-Slave'
+                 }
+            steps {
+                script {
+                    docker.withRegistry('', registryCredential){
+                        image = docker.image('konstantinnn/my-app:latest')
+                        image.pull()   
+                        
+                    }
+                }
+            }
+        } 
+      
+      stage('Running the container') {
+            agent { 
+                label 'Test-Slave'
+                 }
+            steps {
+                script {
+                    sh "docker rm -f test"
+                    sh "docker run -dp 8080:8080 --name test konstantinnn/my-app:latest"
+                    }
+            }
+                
         }
     }
 }
