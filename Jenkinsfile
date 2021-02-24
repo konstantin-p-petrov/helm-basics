@@ -1,4 +1,5 @@
 pipeline {
+
     environment {
         registry = "konstantinnn/my-app"
         registryCredential = "docker-credentials"
@@ -11,21 +12,27 @@ pipeline {
                  }
             steps {
                 checkout scm
-                script{
-                    sh 'git pull origin release'
-                }
                 echo '====stage 1: Successfully pulled repo=='
             }
         }
-        stage('Packaging of Java Project') {
+
+        stage('Packaging of Java Project && creating a image && push it to DockerHub') {
             agent { 
                 label 'master'
                  }
             steps {
-                sh 'mvn --version'
-                sh 'cd my-app && mvn clean'
-                sh 'cd my-app && mvn package'
-                echo '====stage 1: Successfully tested and packed Java Web Application===='
+                script {
+                    sh "cd my-app && mvn clean"
+                    sh "cd my-app && ls"
+                    sh "cd my-app && mvn package"
+                    sh "cd my-app && ls"
+                    // sh 'docker builder prune -f'
+                    // sh 'docker rmi $(docker images -a -q)'
+                    docker.withRegistry('', registryCredential){
+                        sh "docker build -t ${registry} ."
+                        sh "docker push ${registry}:latest"
+                    }
+                }
             }
         }
         
@@ -41,47 +48,17 @@ pipeline {
                 }
             }
         }     
-
-        stage('Build a container image and push it to Docker Private Repo') {
+       
+        stage('Pull container image from Docker Private Repo in Dev Env') {
             agent { 
-                label 'master'
-                 }
-            steps {
-                script {
-                    docker.withRegistry('', registryCredential){
-                        def test_image = docker.build registry
-                        test_image.push('latest')
-                    }
+                label 'master-slave'
                 }
-            }
-        }     
-
-        stage('Pull container image from Docker Private Repo') {
-            agent { 
-                label 'Test-Slave'
-                 }
             steps {
-                script {
-                    docker.withRegistry('', registryCredential){
-                        image = docker.image('konstantinnn/my-app:latest')
-                        image.pull()   
-                        
-                    }
-                }
+               
+               sh 'kubectl apply -f /home/vagrant/prod-env.yaml -n prod'
+               sh 'kubectl get pods -n prod'
+               sh 'kubectl get services -o wide -n prod'
             }
         } 
-      
-      stage('Running the container') {
-            agent { 
-                label 'Test-Slave'
-                 }
-            steps {
-                script {
-                    sh "docker rm -f test"
-                    sh "docker run -dp 8080:8080 --name test konstantinnn/my-app:latest"
-                    }
-            }
-                
-        }
     }
 }
