@@ -62,7 +62,8 @@ pipeline {
                         sh 'kubectl apply -f /home/vagrant/my-app-prod.yaml -n production'
                         sh 'kubectl get pods -n production'
                         sh 'kubectl get services -o wide -n production'
-                    }            
+                    } 
+                }           
             }
         } 
     }
