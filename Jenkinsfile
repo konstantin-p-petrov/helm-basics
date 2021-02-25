@@ -55,9 +55,9 @@ pipeline {
                 }
             steps {
                
-               sh 'kubectl apply -f /home/vagrant/my-app-dev.yaml -n development'
-               sh 'kubectl get pods -n development'
-               sh 'kubectl get services -o wide -n development'
+               sh 'kubectl apply -f /home/vagrant/my-app-test.yaml -n test'
+               sh 'kubectl get pods -n test'
+               sh 'kubectl get services -o wide -n test'
             }
         } 
     }
