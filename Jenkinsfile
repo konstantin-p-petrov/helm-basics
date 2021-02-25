@@ -54,10 +54,10 @@ pipeline {
                 label 'master-slave'
                 }
             steps {
-               
-               sh 'kubectl apply -f /home/vagrant/my-app-test.yaml -n test'
-               sh 'kubectl get pods -n test'
-               sh 'kubectl get services -o wide -n test'
+               sh 'kubectl delete -f /home/vagrant/my-app-prod.yaml -n production'
+               sh 'kubectl apply -f /home/vagrant/my-app-prod.yaml -n production'
+               sh 'kubectl get pods -n production'
+               sh 'kubectl get services -o wide -n production'
             }
         } 
     }
