@@ -55,9 +55,8 @@ pipeline {
                 }
             steps {
                 script {
-                    def deployment = sh'kubectl get deployment -n production | grep -o my-app'
-                    echo "env.${deployment}"
-                    if ( env.deployment == 'my-app') {
+                    
+                    if ( sh'kubectl get deployment -n production | grep -o my-app'== 'my-app') {
                         echo 'Entered in the if'
                         sh 'kubectl delete -f /home/vagrant/my-app-prod.yaml -n production'
                     } else {
