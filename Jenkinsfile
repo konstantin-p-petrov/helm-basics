@@ -49,7 +49,7 @@ pipeline {
             }
         }     
        
-        stage('Pull container image from Docker Private Repo in Dev Env') {
+        stage('Run application in Kubernetes Prod Env') {
             agent { 
                 label 'master-slave'
                 }
