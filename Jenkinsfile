@@ -55,7 +55,7 @@ pipeline {
                 }
             steps {
                 script {
-                    if ( 'sh kubectl get deployment -n production' == False){
+                    if ( 'sh kubectl get deployment -n production' == false){
                         echo 'test'
                     }
                     // else{
