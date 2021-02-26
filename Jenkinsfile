@@ -55,7 +55,7 @@ pipeline {
                 }
             steps {
                 script {
-                    if ( 'sh kubectl get deployment -n production | grep -o my-app ' == 'No resources found in production namespace.'){
+                    if ( 'sh kubectl get deployment -n production' == 'No resources found in production namespace.'){
                         echo 'test'
                     }
                     // else{
