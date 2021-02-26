@@ -55,8 +55,8 @@ pipeline {
                 }
             steps {
                 script {
-                    FALSE_DEPLOYMENT = sh (script: 'kubectl get deployment -n production', returnStdout: false).trim()
-                    if ( FALSE_DEPLOYMENT == false){
+                    FALSE_DEPLOYMENT = sh (script: 'kubectl get deployment -n production', returnStdout: true).trim()
+                    if ( FALSE_DEPLOYMENT == 'No resources found in production namespace.'){
                         echo 'test'
                     }
                     // else{
