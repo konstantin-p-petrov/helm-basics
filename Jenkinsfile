@@ -55,7 +55,8 @@ pipeline {
                 }
             steps {
                 script {
-                    if ( sh 'kubectl get deployment -n production' == false){
+                    FALSE_DEPLOYMENT = sh (script: 'kubectl get deployment -n production', returnStdout: false).trim()
+                    if ( FALSE_DEPLOYMENT == false){
                         echo 'test'
                     }
                     // else{
