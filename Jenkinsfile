@@ -55,14 +55,14 @@ pipeline {
                 }
             steps {
                 script {
-                    FALSE_DEPLOYMENT = sh (script: 'kubectl get deployment -n production', returnStdout: true).trim()
-                    if ( FALSE_DEPLOYMENT == 'No resources found in production namespace.'){
-                        echo 'test'
+                    sh 'kubectl apply -f /home/vagrant/my-app-prod.yaml -n production'
+
+                    DEPLOYMENT = sh (script: 'kubectl get deployment -n production | grep -o my-app', returnStdout: true).trim()
+
+                    if ( DEPLOYMENT == 'my-app'){
+                        sh 'kubectl delete -f /home/vagrant/my-app-prod.yaml -n production'
                     }
-                    // else{
-                    //     DEPLOYMENT = sh (script: 'kubectl get deployment -n production | grep -o my-app', returnStdout: true).trim()
-                    //     sh 'kubectl delete -f /home/vagrant/my-app-prod.yaml -n production'
-                    // }
+                    
                         sh 'kubectl apply -f /home/vagrant/my-app-prod.yaml -n production'
                         sh 'kubectl get pods -n production'
                         sh 'kubectl get services -o wide -n production'
